@@ -36,17 +36,41 @@
 #include "switch_wrapper.h"
 
 #define JOYPADS_MAX 8
+#define JOYPAD_BUTTONS 16
 
 class JoypadSwitch {
 public:
+	enum Layout {
+		LAYOUT_STANDARD,
+		LAYOUT_JOYCON_LEFT,
+		LAYOUT_JOYCON_RIGHT,
+	};
+
 	JoypadSwitch(InputDefault *in);
 	~JoypadSwitch();
 	void process();
+	int show_controller_support(int p_min_players, int p_max_players, bool p_permit_joy_dual);
 
 private:
+	struct Slot {
+		PadState pad;
+		bool connected = false;
+		u32 style_set = 0;
+		u32 device_type = 0;
+		Layout layout = LAYOUT_STANDARD;
+		u32 pressed_buttons = 0;
+	};
+
 	InputDefault *input;
-	PadState pads[JOYPADS_MAX];
-	int button_count = 0;
+	Slot slots[JOYPADS_MAX];
+
+	void update_connection(int p_index);
+	void update_axes(int p_index);
+	void update_buttons(int p_index);
+	void release_all(int p_index);
+	static Layout detect_layout(u32 p_style_set, u32 p_device_type);
+	static String device_name(u32 p_style_set, Layout p_layout);
+	static String device_guid(u32 p_style_set, Layout p_layout);
 };
 
 #endif // JOYPAD_SWITCH_H

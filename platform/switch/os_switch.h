@@ -120,6 +120,8 @@ public:
 
 	void key(uint32_t p_key, bool p_pressed);
 
+	JoypadSwitch *get_joypad() const;
+
 	static OS_Switch *get_singleton();
 
 	OS_Switch();

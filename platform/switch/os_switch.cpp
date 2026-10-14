@@ -164,10 +164,6 @@ Error OS_Switch::initialize(const VideoMode &p_desired, int p_video_driver, int 
 
 	input = memnew(InputDefault);
 	input->set_emulate_mouse_from_touch(true);
-	// TODO: handle joypads/joycons status
-	for (int i = 0; i < 8; i++) {
-		input->joy_connection_changed(i, true, "pad" + (char)i, "");
-	}
 	joypad = memnew(JoypadSwitch(input));
 
 	if (R_SUCCEEDED(psmInitialize())) {
@@ -573,6 +569,10 @@ String OS_Switch::get_user_data_dir() const {
 		}
 	}
 	return get_data_path().plus_file(get_godot_dir_name()).plus_file("app_userdata").plus_file("__unknown");
+}
+
+JoypadSwitch *OS_Switch::get_joypad() const {
+	return joypad;
 }
 
 OS_Switch *OS_Switch::get_singleton() {

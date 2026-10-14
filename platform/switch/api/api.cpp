@@ -75,6 +75,7 @@ NintendoSwitch::NintendoSwitch() {
 
 void NintendoSwitch::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("show_virtual_keyboard", "existing_text", "type"), &NintendoSwitch::show_virtual_keyboard, DEFVAL(""), DEFVAL(NORMAL_KEYBOARD));
+	ClassDB::bind_method(D_METHOD("show_controller_support", "min_players", "max_players", "permit_joy_dual"), &NintendoSwitch::show_controller_support, DEFVAL(2), DEFVAL(8), DEFVAL(true));
 
 	BIND_ENUM_CONSTANT(NORMAL_KEYBOARD)
 	BIND_ENUM_CONSTANT(NUMPAD_KEYBOARD)
@@ -172,6 +173,14 @@ void NintendoSwitch::hide_virtual_keyboard() {
 
 bool NintendoSwitch::is_virtual_keyboard_open() {
 	return g_swkbd_open;
+}
+
+int NintendoSwitch::show_controller_support(int p_min_players, int p_max_players, bool p_permit_joy_dual) {
+#ifdef HORIZON_ENABLED
+	return OS_Switch::get_singleton()->get_joypad()->show_controller_support(p_min_players, p_max_players, p_permit_joy_dual);
+#else
+	return -1;
+#endif // HORIZON_ENABLED
 }
 
 void NintendoSwitch::cleanup() {

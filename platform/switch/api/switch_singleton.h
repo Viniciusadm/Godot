@@ -73,6 +73,8 @@ public:
 	void hide_virtual_keyboard();
 	bool is_virtual_keyboard_open();
 
+	int show_controller_support(int p_min_players, int p_max_players, bool p_permit_joy_dual);
+
 	void cleanup();
 
 	NintendoSwitch();
