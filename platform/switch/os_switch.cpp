@@ -483,6 +483,14 @@ void OS_Switch::run() {
 	main_loop->finish();
 }
 
+bool OS_Switch::is_joy_known(int p_device) {
+	return input->is_joy_mapped(p_device);
+}
+
+String OS_Switch::get_joy_guid(int p_device) const {
+	return input->get_joy_guid_remapped(p_device);
+}
+
 bool OS_Switch::has_touchscreen_ui_hint() const {
 	return true;
 }
